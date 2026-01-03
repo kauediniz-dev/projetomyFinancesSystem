@@ -2,7 +2,7 @@ import './App.css'
 import { useState } from "react"
 import FinanceControl from './components/Header/FinanceControl/FinanceControl'
 import Header from './components/Header/Header'
-import type { Movement } from './models/interfaces/Movements/movement';
+import type { Movement } from './models/interfaces/Movement/Movement';
 
 function App() {
   const [currentBalance, setCurrentBalance] = useState(0); // State de saldo atual
@@ -36,7 +36,7 @@ function App() {
       setCurrentBalance(
         (prevBalance) => prevBalance - Number(movement.value)
       );
-    
+     
      }
     }
   };
@@ -44,7 +44,7 @@ function App() {
   return (
     <div>
       <Header />
-      <FinanceControl  />
+      <FinanceControl balance={currentBalance} expenses={currentExpenses} handleSetMovement={setNewMovement} />
       
     </div>
   )
