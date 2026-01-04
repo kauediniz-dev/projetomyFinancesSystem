@@ -1,41 +1,115 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import type { BalaceProps } from "../../../../models/interfaces/BalanceProps/BalanceProps";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDollar } from "@fortawesome/free-solid-svg-icons";
 import "./Balance.css";
-FontAwesomeIcon 
+import Button from "../../Button/Button";
+FontAwesomeIcon;
 
- 
- 
- const Balance = ( {emitMovement, currentBalance}: BalaceProps) => {
-   const [renderInputForm, setRenderInputForm] = useState(false);
-   const [IsFormValid, setIsFormValid] = useState(false);
-   const [inputName, setInputName] = useState("");
-   const [inputValue, setInputValue] = useState("");
+const Balance = ({ emitMovement, currentBalance }: BalaceProps) => {
+  const [renderInputForm, setRenderInputForm] = useState(false);
+  const [IsFormValid, setIsFormValid] = useState(false);
+  const [inputName, setInputName] = useState("");
+  const [inputValue, setInputValue] = useState("");
 
-   const handleRenderInputForm = () => setRenderInputForm(!false);
+  const handleRenderInputForm = () => setRenderInputForm(!false);
 
-   const hideInputForm = () => {
+  const hideInputForm = () => {
     setRenderInputForm(false);
     setIsFormValid(false);
     setInputName("");
     setInputValue("");
-   }
-   
-    return (
-        <div>
-            <div className="balance_container">
-                <div className="balance_card">
-                    <header className="balance_header">
-                        <FontAwesomeIcon icon={faDollar} color="#7af1a7" size="2x"/>
-                        <h2>Saldo</h2>
-                    </header>
+  };
 
-                <h3> {currentBalance > 0 ? currentBalance : "R$ 0"} </h3>
-                </div>
-            </div>
+  const formSubmitHandler = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (inputName.trim().length === 0 || inputValue.trim().length === 0) {
+      setIsFormValid(false);
+      return;
+    }
+
+    hideInputForm();
+    emitMovement({
+      name: inputName,
+      value: inputValue,
+      type: "Input",
+    });
+  };
+
+  const handleInputNameForm = (event: React.FormEvent<HTMLInputElement>) => {
+    const eventTarget = event.currentTarget as HTMLInputElement;
+    const eventValue = eventTarget.value;
+    inputName.trim().length > 0 ? setIsFormValid(true) : setIsFormValid(false);
+    setInputName(eventValue);
+  };
+
+  const handleInputValueForm = (event: React.FormEvent<HTMLInputElement>) => {
+    const eventTarget = event.currentTarget as HTMLInputElement;
+    const eventValue = eventTarget.value;
+    inputValue.trim().length > 0 ? setIsFormValid(true) : setIsFormValid(false);
+    setInputValue(eventValue);
+  };
+
+  return (
+    <div>
+      <div className="balance_container">
+        <div className="balance_card">
+          <header className="balance_header">
+            <FontAwesomeIcon icon={faDollar} color="#7af1a7" size="2x" />
+            <h2>Saldo</h2>
+          </header>
+
+          <h3> {currentBalance > 0 ? currentBalance : "R$ 0"} </h3>
+
+          {!renderInputForm && (
+            <Button
+              action={handleRenderInputForm}
+              title="Entrada"
+              priority="Input"
+            />
+          )}
+
+          {renderInputForm && (
+            <form onSubmit={formSubmitHandler}>
+              <div
+                className={`input_form_container ${
+                  !setIsFormValid ? "invalid" : ""
+                }`}
+              >
+                <input
+                  type="text"
+                  placeholder="Nome"
+                  className="balance_input"
+                  value={inputName}
+                  onChange={handleInputNameForm}
+                />
+                <input
+                  type="text"
+                  placeholder="Valor"
+                  className="balance_input"
+                  value={inputValue}
+                  onChange={handleInputValueForm}
+                />
+              </div>
+              <div className="actions_form_buttons_container">
+                <Button
+                  title="Cancelar"
+                  priority="Output"
+                  action={hideInputForm}
+                />
+                <Button
+                  title="Adicionar"
+                  priority="Input"
+                  type="submit"
+                />
+              </div>
+            </form>
+          )}
         </div>
-    );
+      </div>
+    </div>
+  );
 };
 
 export default Balance;
