@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import type { BalaceProps } from "../../../../models/interfaces/BalanceProps/BalanceProps";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDollar } from "@fortawesome/free-solid-svg-icons";
 import "./Balance.css";
-import Button from "../../Button/Button";
+import type { BalaceProps } from "../../models/interfaces/BalanceProps/BalanceProps";
+import Button from "../Button/Button";
 FontAwesomeIcon;
 
 const Balance = ({ emitMovement, currentBalance }: BalaceProps) => {
