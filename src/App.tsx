@@ -1,8 +1,8 @@
 import './App.css'
 import { useState } from "react"
-import FinanceControl from './components/Header/FinanceControl/FinanceControl'
 import Header from './components/Header/Header'
 import type { Movement } from './models/interfaces/Movement/Movement';
+import FinanceControl from './components/FinanceControl/FinanceControl';
 
 function App() {
   const [currentBalance, setCurrentBalance] = useState(0); // State de saldo atual
