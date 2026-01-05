@@ -99,7 +99,7 @@ const Expense = ({
                   onChange={handleInputValueForm}
                 />
               </div>
-              <div className="action_form_button_container"> 
+              <div className="actions_form_buttons_container"> 
                 <Button 
                     title="Cancelar"
                     priority="Output"
