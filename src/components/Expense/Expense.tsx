@@ -1,9 +1,97 @@
 import { useState } from "react";
 import type { ExpenseProps } from "../../models/interfaces/ExpenseProps/ExpenseProps";
-import "./Expense.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPercent } from "@fortawesome/free-solid-svg-icons";
 import Button from "../Button/Button";
+import { FormatMoney } from "../../utils/util";
+import styled from "styled-components";
+import type { FormContainerProps } from "../../models/interfaces/FormContainerProps/FormContainerProps";
+
+export const Container = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const Card = styled.div`
+  background-color: #36383e;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 500px;
+  height: 300px;
+  border-radius: 1.2rem;
+
+  & h2 {
+    margin-left: 1rem;
+    font-weight: 500;
+    font-size: 2.2rem;
+    color: #dddcda;
+  }
+
+  & h3 {
+    margin-left: 1rem;
+    font-weight: 500;
+    font-size: 2.2rem;
+    color: #dddcda;
+  }
+`;
+
+export const CardHeader = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: -2rem;
+`;
+
+export const FormContainer = styled.div<FormContainerProps>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.8rem;
+
+  & input {
+    background: ${(props: FormContainerProps) =>
+      props.invalid ? "#e43f4d7a" : "trasparent"};
+    box-shadow: ${(props: FormContainerProps) =>
+      props.invalid ? "inset #e43f4d 0 0 0 2px" : ""};
+  }
+`;
+
+export const FormInput = styled.input`
+  box-shadow: inset #dddcda 0 0 0 2px;
+  border: 0;
+  background: rgba(0, 0, 0, 0);
+  appearance: none;
+  width: 50%;
+  position: relative;
+  border-radius: 10px;
+  padding: 9px 12px;
+  line-height: 1.4;
+  color: #dddcda;
+  font-size: 16px;
+  font-weight: 400;
+  height: 30px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    box-shadow: 0 0 0 0 #fff inset, #7af1a7 0 0 0 2px;
+  }
+  &:focus {
+    background: #ffffff00;
+    outline: 0;
+    box-shadow: 0 0 0 0 #fff inset, #7af1a7 0 0 0 3px;
+  }
+`;
+
+export const ActionsContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+`;
 
 const Expense = ({
   emitMovement,
@@ -58,15 +146,20 @@ const Expense = ({
   };
 
   return (
-    <div>
-      <div className="expense_container">
-        <div className="expense_card">
-          <header className="expense_header">
+    
+      <Container>
+        <Card>
+          <CardHeader>
             <FontAwesomeIcon icon={faPercent} color="#E43F4d" size="2x" />
             <h2>Despesas</h2>
-          </header>
+          </CardHeader>
 
-          <h3> {currentExpenses > 0 ? currentExpenses : "R$ 0"} </h3>
+          <h3>
+            {" "}
+            {currentExpenses > 0
+              ? FormatMoney(String(currentExpenses))
+              : "R$ 0"}{" "}
+          </h3>
 
           {!renderInputForm && (
             <Button
@@ -79,43 +172,32 @@ const Expense = ({
 
           {renderInputForm && (
             <form onSubmit={formSubmitHandler}>
-              <div
-                className={`input_form_container ${
-                  !IsFormValid ? "invalid" : ""
-                }`}
-              >
-                <input
+              <FormContainer invalid={!IsFormValid}>
+                <FormInput
                   type="text"
                   placeholder="Nome"
-                  className="expense_input"
                   value={InputName}
                   onChange={handleInputNameForm}
                 />
-                <input
+                <FormInput
                   type="text"
                   placeholder="Valor"
-                  className="expense_input"
                   value={InputValue}
                   onChange={handleInputValueForm}
                 />
-              </div>
-              <div className="actions_form_buttons_container"> 
-                <Button 
-                    title="Cancelar"
-                    priority="Output"
-                    action={hideInputForm}
+              </FormContainer>
+              <ActionsContainer>
+                <Button
+                  title="Cancelar"
+                  priority="Output"
+                  action={hideInputForm}
                 />
-                <Button 
-                    type="submit"
-                    title="Adicionar"
-                    priority="Input"
-                />
-              </div>
+                <Button type="submit" title="Adicionar" priority="Input" />
+              </ActionsContainer>
             </form>
           )}
-        </div>
-      </div>
-    </div>
+        </Card>
+      </Container>
   );
 };
 
