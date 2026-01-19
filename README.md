@@ -16,7 +16,7 @@ Sistema Financeiro desenvolvido para o controle dos seus gastos e seus retornos.
 <br>
 
 <p align="center">
-    <img alt="My Finance System" src="" whidth="100%">
+    <img alt="My Finance System" src="SistemaFinanceiro.PNG" whidth="100%">
 </p>
 
 ## 👨🏿‍💻 Tecnologias
